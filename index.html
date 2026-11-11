@@ -3,191 +3,143 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>CrossFit Patellar Tendinitis (Jumper's Knee) Rehab Tracker</title>
+  <title>Patellar Tendinitis Rehab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            base: '#111315',
+            surface: '#181b1f',
+            elevated: '#20242a',
+            borderSubtle: '#2a2f37',
+            textPrimary: '#f1f5f9',
+            textSecondary: '#94a3b8',
+            textMuted: '#64748b'
+          }
+        }
+      }
+    };
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen pb-28 antialiased selection:bg-lime-400 selection:text-slate-950">
+<body class="bg-[#111315] text-[#f1f5f9] min-h-screen pb-24 antialiased">
 
-  <!-- Top Sticky Gym Header -->
-  <header class="sticky top-0 z-30 bg-slate-950/95 backdrop-blur-md border-b border-slate-800">
-    <div class="max-w-5xl mx-auto px-3 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-xl bg-lime-400/15 border border-lime-400/40 flex items-center justify-center text-lime-400 font-black text-lg">
-            PT
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h1 class="text-base sm:text-lg font-black tracking-tight text-white">CrossFit Patellar Rehab</h1>
-              <span id="header-phase-badge" class="hidden sm:inline-block px-2 py-0.5 rounded bg-sky-500/15 border border-sky-500/30 text-sky-300 text-xs font-bold">
-                Phase 2: Heavy Slow Resistance
-              </span>
-            </div>
-            <p class="text-xs text-slate-400">Evidence-Based Jumper's Knee Protocol • LocalStorage Ready</p>
-          </div>
-        </div>
-        <button
-          type="button"
-          onclick="switchTab('timer')"
-          class="sm:hidden px-3 py-2 rounded-xl bg-lime-400 text-slate-950 font-extrabold text-xs"
-        >
-          ⏱ Timer
-        </button>
-      </div>
-
-      <div class="flex flex-wrap items-center justify-between sm:justify-end gap-2">
-        <span id="header-readiness-pill" class="px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/50 bg-emerald-500/15 text-emerald-300">
-          24h Pain: 1/10 • Green: Load Approved
-        </span>
-        <button
-          type="button"
-          onclick="switchTab('ai')"
-          class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sky-300 text-xs font-bold"
-        >
-          🤖 Export for AI
-        </button>
-      </div>
+  <!-- Header & Navigation -->
+  <header class="sticky top-0 z-30 bg-[#111315]/95 backdrop-blur-md border-b border-[#2a2f37]">
+    <div class="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between">
+      <h1 class="text-sm sm:text-base font-bold tracking-tight text-[#f1f5f9]">Patellar Rehab</h1>
+      <span id="header-readiness-pill" class="px-2.5 py-0.5 rounded-full text-xs font-semibold border border-[#2a2f37] bg-[#20242a] text-[#94a3b8]">
+        24h: -- • Ready
+      </span>
     </div>
 
-    <!-- High-Contrast Sweaty-Hands Navigation Bar -->
-    <nav class="max-w-5xl mx-auto px-2 sm:px-6 grid grid-cols-5 gap-1 bg-slate-900/70 border-t border-slate-800/80">
-      <button type="button" id="tab-btn-workout" onclick="switchTab('workout')" class="nav-tab active tap-target flex flex-col sm:flex-row items-center justify-center gap-1 text-xs sm:text-sm py-2">
-        <span>🏋️</span>
-        <span>Rehab Plan</span>
+    <!-- 4 Clean Text Tabs -->
+    <nav class="max-w-4xl mx-auto px-4 grid grid-cols-4 border-t border-[#2a2f37]/80">
+      <button type="button" id="tab-btn-workout" onclick="switchTab('workout')" class="nav-tab active tap-target py-2 text-center">
+        Plan
       </button>
-      <button type="button" id="tab-btn-timer" onclick="switchTab('timer')" class="nav-tab tap-target flex flex-col sm:flex-row items-center justify-center gap-1 text-xs sm:text-sm py-2">
-        <span>⏱</span>
-        <span>Gym Timer</span>
+      <button type="button" id="tab-btn-timer" onclick="switchTab('timer')" class="nav-tab tap-target py-2 text-center">
+        Timer
       </button>
-      <button type="button" id="tab-btn-tracker" onclick="switchTab('tracker')" class="nav-tab tap-target flex flex-col sm:flex-row items-center justify-center gap-1 text-xs sm:text-sm py-2">
-        <span>📊</span>
-        <span>Pain Log</span>
+      <button type="button" id="tab-btn-tracker" onclick="switchTab('tracker')" class="nav-tab tap-target py-2 text-center">
+        Log
       </button>
-      <button type="button" id="tab-btn-ai" onclick="switchTab('ai')" class="nav-tab tap-target flex flex-col sm:flex-row items-center justify-center gap-1 text-xs sm:text-sm py-2">
-        <span>🤖</span>
-        <span>AI Sync</span>
-      </button>
-      <button type="button" id="tab-btn-github" onclick="switchTab('github')" class="nav-tab tap-target flex flex-col sm:flex-row items-center justify-center gap-1 text-xs sm:text-sm py-2">
-        <span>📦</span>
-        <span>GitHub Code</span>
+      <button type="button" id="tab-btn-ai" onclick="switchTab('ai')" class="nav-tab tap-target py-2 text-center">
+        AI
       </button>
     </nav>
   </header>
 
-  <!-- Main Content Container -->
-  <main class="max-w-5xl mx-auto px-3 sm:px-6 pt-5 space-y-6">
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 pt-4 space-y-4">
 
-    <!-- ====================================================================
-         VIEW 1: PHASED REHAB WORKOUT & EQUIPMENT PROTOCOL
-         ==================================================================== -->
-    <section id="view-workout" class="space-y-5">
-      <!-- 4-Phase Selector Cards -->
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Select Rehab Progression Phase (Tap to Switch)</h2>
-          <a href="https://www.jospt.org/doi/10.2519/jospt.2015.5987" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-sky-400 underline hover:text-sky-300">
-            Malliaras et al. Clinical Load Guide ↗
-          </a>
-        </div>
-        <div id="phase-selector-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-2.5"></div>
-      </div>
+    <!-- VIEW 1: REHAB PLAN -->
+    <section id="view-workout" class="space-y-4">
+      <!-- 4 Compact Phase Pills -->
+      <div id="phase-selector-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
 
-      <!-- Active Phase Clinical Overview & Rules -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-lg space-y-3">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+      <!-- Phase Overview Card -->
+      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 space-y-3">
+        <div class="flex items-center justify-between gap-2">
           <div>
-            <h2 id="phase-banner-title" class="text-lg sm:text-xl font-black text-white">Phase 2 — Heavy Slow Resistance (HSR)</h2>
-            <p id="phase-banner-subtitle" class="text-xs sm:text-sm font-semibold text-lime-400 mt-0.5">Weeks 3–6 (3 Sessions/Week — Mandatory 48h Recovery)</p>
+            <h2 id="phase-banner-title" class="text-sm sm:text-base font-bold text-[#f1f5f9]">Phase 2 — Heavy Slow Resistance (HSR)</h2>
+            <p id="phase-banner-subtitle" class="text-xs text-[#94a3b8] mt-0.5">3x/week • 48h rest between sessions</p>
           </div>
-          <div class="flex items-center gap-2">
-            <button
-              type="button"
-              onclick="resetTodaySets()"
-              class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-slate-300"
-            >
-              ↺ Reset Today's Sets
-            </button>
-          </div>
+          <button
+            type="button"
+            onclick="resetTodaySets()"
+            class="px-2.5 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8] hover:text-[#f1f5f9] transition-colors"
+          >
+            Reset Sets
+          </button>
         </div>
 
-        <p id="phase-banner-goal" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
-
-        <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800/90">
-          <div class="text-xs font-extrabold uppercase tracking-wider text-amber-300 mb-1.5">Phase Progression & CrossFit WOD Scaling Rules</div>
-          <ul id="phase-progression-rules" class="space-y-1.5"></ul>
-        </div>
-
-        <!-- Session Completion Progress Bar -->
+        <!-- Slim Progress Bar -->
         <div class="pt-1">
-          <div class="flex items-center justify-between text-xs font-bold mb-1.5">
-            <span class="text-slate-400 uppercase tracking-wider">Today's Rehab Session Progress</span>
-            <span id="workout-completion-text" class="text-lime-400">2 / 11 Sets Completed (18%)</span>
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="text-[#64748b]">Session Progress</span>
+            <span id="workout-completion-text" class="text-[#94a3b8] font-medium">0 / 0 sets</span>
           </div>
-          <div class="w-full h-3 rounded-full bg-slate-950 border border-slate-800 overflow-hidden">
-            <div id="workout-completion-bar" class="h-full bg-gradient-to-r from-lime-400 to-sky-400 transition-all duration-300" style="width: 18%;"></div>
+          <div class="w-full h-1.5 rounded-full bg-[#20242a] overflow-hidden">
+            <div id="workout-completion-bar" class="h-full bg-[#10b981] transition-all duration-300" style="width: 0%;"></div>
           </div>
         </div>
       </div>
 
       <!-- Prescribed Exercise Cards Container -->
-      <div id="exercise-cards-container" class="space-y-4"></div>
+      <div id="exercise-cards-container" class="space-y-3"></div>
     </section>
 
-    <!-- ====================================================================
-         VIEW 2: BUILT-IN GYM TIMER & HSR 3s/3s TEMPO METRONOME
-         ==================================================================== -->
-    <section id="view-timer" class="hidden space-y-5">
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
-        <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-800">
-          <div>
-            <h2 class="text-lg sm:text-xl font-black text-white">Sweaty-Hands Gym Timer & HSR Metronome</h2>
-            <p class="text-xs text-slate-400">Isometric 45s Holds • Rest Intervals • 6-Second Heavy Slow Resistance Cadence Counter</p>
-          </div>
+    <!-- VIEW 2: GYM TIMER -->
+    <section id="view-timer" class="hidden space-y-4">
+      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 sm:p-5">
+        <div class="flex items-center justify-between pb-3 border-b border-[#2a2f37]">
+          <h2 class="text-sm sm:text-base font-bold text-[#f1f5f9]">Timer</h2>
           <button
             type="button"
             id="timer-audio-toggle"
             onclick="toggleTimerMute()"
-            class="tap-target px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-extrabold text-lime-300"
+            class="px-2.5 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]"
           >
-            🔊 Buzzer Active
+            Buzzer Active
           </button>
         </div>
 
-        <!-- 3 Timer Mode Buttons -->
-        <div class="grid grid-cols-3 gap-2.5 my-4">
-          <button type="button" id="timer-mode-iso" onclick="setTimerMode('iso')" class="tap-target rounded-xl font-extrabold text-xs sm:text-sm bg-lime-400 text-slate-950 shadow">
-            45s Iso Hold
+        <!-- 3 Mode Buttons -->
+        <div class="grid grid-cols-3 gap-2 my-4">
+          <button type="button" id="timer-mode-iso" onclick="setTimerMode('iso')" class="tap-target py-2 rounded-lg font-semibold text-xs sm:text-sm bg-[#e2e8f0] text-[#0f172a]">
+            Hold (45s)
           </button>
-          <button type="button" id="timer-mode-rest" onclick="setTimerMode('rest')" class="tap-target rounded-xl font-bold text-xs sm:text-sm bg-slate-800 text-slate-300 border border-slate-700">
-            Rest Countdown
+          <button type="button" id="timer-mode-rest" onclick="setTimerMode('rest')" class="tap-target py-2 rounded-lg font-medium text-xs sm:text-sm bg-[#20242a] text-[#94a3b8] border border-[#2a2f37]">
+            Rest
           </button>
-          <button type="button" id="timer-mode-hsr" onclick="setTimerMode('hsr')" class="tap-target rounded-xl font-bold text-xs sm:text-sm bg-slate-800 text-slate-300 border border-slate-700">
-            3s/3s HSR Pacer
+          <button type="button" id="timer-mode-hsr" onclick="setTimerMode('hsr')" class="tap-target py-2 rounded-lg font-medium text-xs sm:text-sm bg-[#20242a] text-[#94a3b8] border border-[#2a2f37]">
+            Tempo (3s/3s)
           </button>
         </div>
 
         <!-- Radial Timer Display -->
-        <div class="flex flex-col items-center justify-center py-4">
-          <p id="timer-context-label" class="text-xs sm:text-sm font-bold text-sky-300 mb-3 text-center">
-            Rig Spanish Squat — 45s Isometric Hold
-          </p>
+        <div class="flex flex-col items-center justify-center py-3">
+          <p id="timer-context-label" class="text-xs text-[#94a3b8] mb-3 text-center"></p>
 
-          <div class="relative w-56 h-56 flex items-center justify-center">
+          <div class="relative w-44 h-44 flex items-center justify-center">
             <svg class="w-full h-full" viewBox="0 0 220 220">
-              <circle cx="110" cy="110" r="96" stroke="#1e293b" stroke-width="12" fill="none" />
+              <circle cx="110" cy="110" r="96" stroke="#20242a" stroke-width="10" fill="none" />
               <circle
                 id="timer-ring-progress"
                 class="timer-ring-circle"
                 cx="110"
                 cy="110"
                 r="96"
-                stroke="#a3e635"
-                stroke-width="12"
+                stroke="#10b981"
+                stroke-width="10"
                 stroke-linecap="round"
                 fill="none"
                 stroke-dasharray="603.18"
@@ -195,42 +147,42 @@
               />
             </svg>
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-              <span id="timer-phase-badge" class="px-3 py-1 rounded-full text-xs font-extrabold bg-lime-400/20 text-lime-300 border border-lime-400/40 mb-2">
-                READY FOR 45s HOLD
+              <span id="timer-phase-badge" class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#20242a] text-[#94a3b8] border border-[#2a2f37] mb-1">
+                READY
               </span>
-              <div id="timer-display-main" class="text-5xl font-black tracking-tight text-white tabular-nums">
+              <div id="timer-display-main" class="text-4xl sm:text-5xl font-mono font-bold tracking-tight text-[#f1f5f9] tabular-nums">
                 00:45
               </div>
-              <div id="timer-hsr-rep-counter" class="hidden text-xs font-bold text-slate-300 mt-1.5">
+              <div id="timer-hsr-rep-counter" class="hidden text-xs text-[#94a3b8] mt-1">
                 Rep 1 of 8
               </div>
             </div>
           </div>
 
-          <!-- Primary Start / Pause / Reset Controls -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 w-full max-w-xl mt-5">
+          <!-- Controls -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-md mt-4">
             <button
               type="button"
               id="btn-timer-start"
               onclick="toggleTimerStartPause()"
-              class="col-span-2 tap-target py-3.5 rounded-2xl bg-lime-400 hover:bg-lime-300 text-slate-950 font-black text-base shadow-lg"
+              class="col-span-2 tap-target py-2.5 rounded-lg bg-[#e2e8f0] hover:bg-white text-[#0f172a] font-bold text-xs sm:text-sm transition-colors"
             >
-              ▶ START TIMER
+              Start
             </button>
             <button
               type="button"
               id="btn-timer-reset"
               onclick="resetTimer()"
-              class="tap-target py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-extrabold text-sm"
+              class="tap-target py-2.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-[#94a3b8] hover:text-[#f1f5f9] font-medium text-xs sm:text-sm transition-colors"
             >
-              ↺ Reset
+              Reset
             </button>
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-1.5">
               <button
                 type="button"
                 id="btn-timer-minus15"
                 onclick="adjustTimerSeconds(-15)"
-                class="tap-target rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-extrabold text-xs"
+                class="tap-target rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-[#94a3b8] hover:text-[#f1f5f9] font-medium text-xs"
               >
                 -15s
               </button>
@@ -238,30 +190,27 @@
                 type="button"
                 id="btn-timer-plus15"
                 onclick="adjustTimerSeconds(15)"
-                class="tap-target rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-extrabold text-xs"
+                class="tap-target rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-[#94a3b8] hover:text-[#f1f5f9] font-medium text-xs"
               >
                 +15s
               </button>
             </div>
           </div>
 
-          <!-- Quick Duration Presets & HSR Target Reps -->
-          <div class="w-full max-w-xl mt-5 pt-4 border-t border-slate-800 space-y-3">
-            <div class="text-xs font-bold uppercase tracking-wider text-slate-400">Quick Gym Interval Presets</div>
-            <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
-              <button type="button" id="btn-preset-30" onclick="setTimerPreset(30)" class="tap-target rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-extrabold text-slate-200">30s</button>
-              <button type="button" id="btn-preset-45" onclick="setTimerPreset(45)" class="tap-target rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-extrabold text-lime-300">45s Iso</button>
-              <button type="button" id="btn-preset-60" onclick="setTimerPreset(60)" class="tap-target rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-extrabold text-slate-200">60s</button>
-              <button type="button" id="btn-preset-90" onclick="setTimerPreset(90)" class="tap-target rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-extrabold text-sky-300">90s Rest</button>
-              <button type="button" id="btn-preset-120" onclick="setTimerPreset(120)" class="tap-target rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-extrabold text-sky-300">2m Rest</button>
-              <button type="button" id="btn-preset-180" onclick="setTimerPreset(180)" class="tap-target rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-extrabold text-slate-200">3m Heavy</button>
+          <!-- Quick Presets -->
+          <div class="w-full max-w-md mt-4 pt-3 border-t border-[#2a2f37] space-y-2.5">
+            <div class="text-[11px] font-semibold uppercase tracking-wider text-[#64748b]">Presets</div>
+            <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
+              <button type="button" id="btn-preset-30" onclick="setTimerPreset(30)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">30s</button>
+              <button type="button" id="btn-preset-45" onclick="setTimerPreset(45)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">45s</button>
+              <button type="button" id="btn-preset-60" onclick="setTimerPreset(60)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">60s</button>
+              <button type="button" id="btn-preset-90" onclick="setTimerPreset(90)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">90s</button>
+              <button type="button" id="btn-preset-120" onclick="setTimerPreset(120)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">2m</button>
+              <button type="button" id="btn-preset-180" onclick="setTimerPreset(180)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">3m</button>
             </div>
 
-            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
-              <div>
-                <div class="text-xs font-extrabold text-white">HSR Tempo Metronome Target Reps (3s Down / 3s Up)</div>
-                <div class="text-[11px] text-slate-400">Beeps every second and cues bottom turnaround + rep completion</div>
-              </div>
+            <div class="flex items-center justify-between p-2.5 rounded-lg bg-[#111315] border border-[#2a2f37]">
+              <span class="text-xs text-[#94a3b8]">HSR Target Reps (3s/3s)</span>
               <input
                 type="number"
                 id="hsr-target-reps-input"
@@ -269,7 +218,7 @@
                 max="25"
                 value="8"
                 onchange="updateHsrTargetReps(this.value)"
-                class="w-20 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-center text-sm font-black text-lime-400"
+                class="w-16 px-2 py-1 rounded bg-[#20242a] border border-[#2a2f37] text-center text-xs font-bold text-[#f1f5f9]"
               />
             </div>
           </div>
@@ -277,73 +226,41 @@
       </div>
     </section>
 
-    <!-- ====================================================================
-         VIEW 3: DAILY CHECK-IN & PAIN TREND CHART (Chart.js)
-         ==================================================================== -->
-    <section id="view-tracker" class="hidden space-y-5">
-      <!-- KPI Summary Cards -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-        <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800">
-          <div class="text-[11px] font-bold uppercase text-slate-400">7-Day Avg 24h Pain</div>
-          <div id="kpi-avg-24h" class="text-xl font-black text-lime-400 mt-1">2.0 / 10</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">Target &lt;= 3.0 / 10</div>
-        </div>
-        <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800">
-          <div class="text-[11px] font-bold uppercase text-slate-400">7-Day Avg Pre-WOD</div>
-          <div id="kpi-avg-pre" class="text-xl font-black text-sky-400 mt-1">2.3 / 10</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">Warm-up baseline</div>
-        </div>
-        <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800">
-          <div class="text-[11px] font-bold uppercase text-slate-400">Logged Sessions</div>
-          <div id="kpi-sessions-count" class="text-xl font-black text-white mt-1">7 days</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">Stored in browser</div>
-        </div>
-        <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-800">
-          <div class="text-[11px] font-bold uppercase text-slate-400">24h Flare-Ups (&gt;3/10)</div>
-          <div id="kpi-flare-count" class="text-xl font-black text-emerald-400 mt-1">0</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">Last 7 sessions</div>
-        </div>
-      </div>
-
-      <!-- Pain Trend Chart (Chart.js) -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-lg">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-          <div>
-            <h2 class="text-base sm:text-lg font-black text-white">Patellar Tendon Pain Trend & 24-Hour Load Response</h2>
-            <p class="text-xs text-slate-400">Tracks Pre-Workout, Post-Workout (Analgesic Effect), and 24-Hour Next-Day Pain vs. the 3/10 Safe Ceiling</p>
-          </div>
+    <!-- VIEW 3: PAIN LOG & CHART -->
+    <section id="view-tracker" class="hidden space-y-4">
+      <!-- Pain Trend Chart -->
+      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 sm:p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm sm:text-base font-bold text-[#f1f5f9]">Pain Trend</h2>
           <button
             type="button"
             id="btn-seed-sample-logs"
             onclick="seedSampleLogs()"
-            class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-slate-300"
+            class="px-2.5 py-1 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs text-[#94a3b8] hover:text-[#f1f5f9] transition-colors"
           >
-            ↺ Restore 7-Day Sample Data
+            Restore Sample
           </button>
         </div>
-        <div class="relative h-72 w-full">
+        <div class="relative h-60 w-full">
           <canvas id="pain-trend-chart"></canvas>
         </div>
       </div>
 
-      <!-- Daily Check-In Logging Form -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
-          <div>
-            <h2 class="text-lg font-black text-white">Daily Rehab Check-In & 24-Hour Pain Logger</h2>
-            <p class="text-xs text-slate-400">Saved locally in your browser via <code class="text-lime-300">localStorage</code> — works offline on GitHub Pages</p>
-          </div>
+      <!-- Daily Log Form -->
+      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 sm:p-5 space-y-3.5">
+        <div class="flex items-center justify-between border-b border-[#2a2f37] pb-3">
+          <h2 class="text-sm sm:text-base font-bold text-[#f1f5f9]">Daily Log</h2>
           <div class="flex items-center gap-2">
             <input
               type="date"
               id="log-date-input"
               value="2026-11-11"
               onchange="handleLogDateChange(this.value)"
-              class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm font-bold text-white"
+              class="px-2.5 py-1.5 rounded-lg bg-[#20242a] border border-[#2a2f37] text-xs font-medium text-[#f1f5f9]"
             />
             <select
               id="log-phase-select"
-              class="px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm font-bold text-lime-300"
+              class="px-2.5 py-1.5 rounded-lg bg-[#20242a] border border-[#2a2f37] text-xs font-medium text-[#f1f5f9]"
             >
               <option value="1">Phase 1: Isometrics</option>
               <option value="2" selected>Phase 2: HSR</option>
@@ -353,333 +270,213 @@
           </div>
         </div>
 
-        <!-- 0-10 Pain Scale Selectors -->
-        <div class="space-y-4">
+        <!-- 4 Clean Pain Selectors -->
+        <div class="space-y-3">
           <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs sm:text-sm font-extrabold text-slate-200">1. Pre-Workout Tendon Pain (0–10 NRS)</label>
-              <span id="val-pain-pre" class="text-xs font-black px-2.5 py-0.5 rounded bg-slate-800 text-sky-300">1 / 10</span>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs font-medium text-[#94a3b8]">Pre-Workout</label>
+              <span id="val-pain-pre" class="text-xs font-semibold px-2 py-0.5 rounded bg-[#20242a] text-[#f1f5f9]">1 / 10</span>
             </div>
-            <div id="pain-grid-pre" class="grid grid-cols-11 gap-1 sm:gap-1.5"></div>
+            <div id="pain-grid-pre" class="grid grid-cols-11 gap-1"></div>
           </div>
 
           <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs sm:text-sm font-extrabold text-slate-200">2. Post-Workout Tendon Pain (Immediate Analgesic Check)</label>
-              <span id="val-pain-post" class="text-xs font-black px-2.5 py-0.5 rounded bg-slate-800 text-purple-300">2 / 10</span>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs font-medium text-[#94a3b8]">Post-Workout</label>
+              <span id="val-pain-post" class="text-xs font-semibold px-2 py-0.5 rounded bg-[#20242a] text-[#f1f5f9]">2 / 10</span>
             </div>
-            <div id="pain-grid-post" class="grid grid-cols-11 gap-1 sm:gap-1.5"></div>
+            <div id="pain-grid-post" class="grid grid-cols-11 gap-1"></div>
           </div>
 
           <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs sm:text-sm font-extrabold text-lime-300">3. 24-Hour Next-Day Pain Response (Primary Load Progression Signal)</label>
-              <span id="val-pain-24h" class="text-xs font-black px-2.5 py-0.5 rounded bg-lime-400/20 text-lime-300">1 / 10</span>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs font-medium text-[#94a3b8]">24h Next-Day</label>
+              <span id="val-pain-24h" class="text-xs font-semibold px-2 py-0.5 rounded bg-[#20242a] text-[#f1f5f9]">1 / 10</span>
             </div>
-            <div id="pain-grid-24h" class="grid grid-cols-11 gap-1 sm:gap-1.5"></div>
+            <div id="pain-grid-24h" class="grid grid-cols-11 gap-1"></div>
           </div>
 
           <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="text-xs sm:text-sm font-extrabold text-slate-200">4. Morning Single-Leg 25° Decline Squat Test (0–10 Stiffness/Pain)</label>
-              <span id="val-pain-decline" class="text-xs font-black px-2.5 py-0.5 rounded bg-slate-800 text-amber-300">1 / 10</span>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs font-medium text-[#94a3b8]">Decline Squat Test</label>
+              <span id="val-pain-decline" class="text-xs font-semibold px-2 py-0.5 rounded bg-[#20242a] text-[#f1f5f9]">1 / 10</span>
             </div>
-            <div id="pain-grid-decline" class="grid grid-cols-11 gap-1 sm:gap-1.5"></div>
+            <div id="pain-grid-decline" class="grid grid-cols-11 gap-1"></div>
           </div>
         </div>
 
-        <!-- Automated Clinical Decision Box -->
+        <!-- Concise Clinical Decision Box -->
         <div id="clinical-decision-box"></div>
 
-        <!-- Completed Exercises & Notes Inputs -->
-        <div class="grid grid-cols-1 gap-3 pt-2">
+        <!-- Completed Exercises & Notes -->
+        <div class="grid grid-cols-1 gap-2.5 pt-1">
           <div>
-            <label for="log-exercises-summary" class="block text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-              Completed Rehab Exercises & Loads (Auto-filled from Today's Checked Sets or Editable)
+            <label for="log-exercises-summary" class="block text-[11px] font-semibold uppercase tracking-wider text-[#64748b] mb-1">
+              Completed Exercises & Loads
             </label>
             <input
               type="text"
               id="log-exercises-summary"
-              placeholder="e.g., Slant Board HSR Squat (4x8 @ 60kg), Barbell HSR Back Squat (4x8 @ 80kg)"
-              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white focus:outline-none focus:border-lime-400"
+              placeholder="e.g., Slant Board HSR (4x8 @ 60kg)"
+              class="w-full px-3 py-2 rounded-lg bg-[#20242a] border border-[#2a2f37] text-xs text-[#f1f5f9] placeholder:text-[#64748b] focus:outline-none focus:border-[#475569]"
             />
           </div>
 
           <div>
-            <label for="log-notes-input" class="block text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-1">
-              Workout Completion & CrossFit WOD Scaling Notes
+            <label for="log-notes-input" class="block text-[11px] font-semibold uppercase tracking-wider text-[#64748b] mb-1">
+              Notes
             </label>
             <textarea
               id="log-notes-input"
               rows="2"
-              placeholder="Note morning stiffness, WOD substitutions (e.g., BikeErg instead of box jumps), or how the knee felt..."
-              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs sm:text-sm text-white focus:outline-none focus:border-lime-400"
+              placeholder="Morning stiffness, scaling notes..."
+              class="w-full px-3 py-2 rounded-lg bg-[#20242a] border border-[#2a2f37] text-xs text-[#f1f5f9] placeholder:text-[#64748b] focus:outline-none focus:border-[#475569]"
             ></textarea>
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-3 pt-2">
+        <div class="flex items-center gap-2 pt-1">
           <button
             type="button"
             id="btn-save-log"
             onclick="saveDailyLog()"
-            class="tap-target flex-1 py-3 px-5 rounded-xl bg-lime-400 hover:bg-lime-300 text-slate-950 font-black text-sm shadow-lg"
+            class="flex-1 py-2 px-4 rounded-lg bg-[#e2e8f0] hover:bg-white text-[#0f172a] font-bold text-xs transition-colors"
           >
-            💾 Save Daily Check-In to LocalStorage
+            Save Log
           </button>
           <button
             type="button"
             id="btn-clear-log-form"
             onclick="clearLogForm()"
-            class="tap-target py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold text-xs sm:text-sm"
+            class="py-2 px-4 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-[#94a3b8] hover:text-[#f1f5f9] text-xs font-medium transition-colors"
           >
-            Clear Form
+            Clear
           </button>
         </div>
       </div>
 
-      <!-- Saved Check-In History List -->
-      <div class="space-y-2.5">
-        <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Logged Rehab History (Tap Edit to Update 24h Next-Day Score)</h3>
-        <div id="log-history-container" class="space-y-2.5"></div>
+      <!-- Log History -->
+      <div class="space-y-2">
+        <h3 class="text-[11px] font-semibold uppercase tracking-wider text-[#64748b]">Log History</h3>
+        <div id="log-history-container" class="space-y-2"></div>
       </div>
     </section>
 
-    <!-- ====================================================================
-         VIEW 4: AI EVALUATION EXPORT & DYNAMIC JSON PLAN IMPORT
-         ==================================================================== -->
-    <section id="view-ai" class="hidden space-y-5">
-      <!-- Export Last 7 Days for AI Evaluation -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
-          <div>
-            <h2 class="text-lg font-black text-white">1. Export Progress for AI Evaluation</h2>
-            <p class="text-xs text-slate-400">Compiles your last 7 days of pain scores, completed exercises, and notes into a structured prompt to paste back to your AI coach.</p>
-          </div>
-          <div class="flex flex-wrap gap-2">
+    <!-- VIEW 4: AI SYNC -->
+    <section id="view-ai" class="hidden space-y-4">
+      <!-- Card 1: Export 7-Day Summary -->
+      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 sm:p-5 space-y-3">
+        <div class="flex items-center justify-between pb-2.5 border-b border-[#2a2f37]">
+          <h2 class="text-sm sm:text-base font-bold text-[#f1f5f9]">Export 7-Day Summary</h2>
+          <div class="flex items-center gap-2">
             <button
               type="button"
               id="btn-generate-ai-report"
               onclick="generateAiExportReport(true)"
-              class="tap-target px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-extrabold text-sky-300"
+              class="px-2.5 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8] hover:text-[#f1f5f9] transition-colors"
             >
-              🔄 Export Progress for AI
+              Refresh
             </button>
             <button
               type="button"
               id="btn-copy-ai-report"
               onclick="copyAiExportToClipboard()"
-              class="tap-target px-4 py-2.5 rounded-xl bg-lime-400 hover:bg-lime-300 text-slate-950 text-xs font-black shadow"
+              class="px-3 py-1.5 rounded-lg bg-[#e2e8f0] hover:bg-white text-[#0f172a] text-xs font-bold transition-colors"
             >
-              📋 Copy to Clipboard
+              Copy
             </button>
           </div>
         </div>
-
         <textarea
           id="ai-export-textarea"
-          rows="13"
+          rows="10"
           readonly
-          class="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-slate-200 leading-relaxed focus:outline-none focus:border-sky-400"
+          class="w-full p-3 rounded-lg bg-[#111315] border border-[#2a2f37] font-mono text-xs text-[#94a3b8] leading-relaxed focus:outline-none"
         ></textarea>
       </div>
 
-      <!-- Import Updated AI Workout Plan JSON -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
-          <div>
-            <h2 class="text-lg font-black text-white">2. Import Updated Plan from AI</h2>
-            <p class="text-xs text-slate-400">Paste the adjusted JSON workout plan returned by your AI to dynamically update your sets, reps, tempo, or loads.</p>
-          </div>
-          <div class="flex flex-wrap gap-2">
+      <!-- Card 2: Import Plan JSON -->
+      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 sm:p-5 space-y-3">
+        <div class="flex items-center justify-between pb-2.5 border-b border-[#2a2f37]">
+          <h2 class="text-sm sm:text-base font-bold text-[#f1f5f9]">Import Plan JSON</h2>
+          <div class="flex items-center gap-2">
             <button
               type="button"
               id="btn-load-sample-json"
               onclick="loadSampleAiAdjustmentJson()"
-              class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-amber-300"
+              class="px-2.5 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8] hover:text-[#f1f5f9] transition-colors"
             >
-              ✨ Load Sample AI Progression JSON
+              Sample JSON
             </button>
             <button
               type="button"
               id="btn-reset-default-plan"
               onclick="resetDefaultProtocol()"
-              class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-slate-300"
+              class="px-2.5 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8] hover:text-[#f1f5f9] transition-colors"
             >
-              ↺ Reset to Default Protocol
+              Reset
             </button>
           </div>
         </div>
-
         <textarea
           id="ai-import-textarea"
-          rows="10"
-          placeholder='Paste updated JSON workout plan here (or tap "Load Sample AI Progression JSON" above to test)...'
-          class="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-700 font-mono text-xs text-lime-300 leading-relaxed focus:outline-none focus:border-lime-400"
+          rows="8"
+          placeholder="Paste updated JSON plan..."
+          class="w-full p-3 rounded-lg bg-[#111315] border border-[#2a2f37] font-mono text-xs text-[#f1f5f9] placeholder:text-[#64748b] leading-relaxed focus:outline-none focus:border-[#475569]"
         ></textarea>
-
         <button
           type="button"
           id="btn-import-json-plan"
           onclick="importUpdatedPlanJson()"
-          class="tap-target w-full py-3.5 rounded-xl bg-sky-400 hover:bg-sky-300 text-slate-950 font-black text-sm shadow-lg"
+          class="w-full py-2.5 rounded-lg bg-[#e2e8f0] hover:bg-white text-[#0f172a] font-bold text-xs sm:text-sm transition-colors"
         >
-          ⚡ Import Updated Plan & Update Rehab Protocol
+          Apply Plan
         </button>
-
         <div id="import-status-banner" class="hidden"></div>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         VIEW 5: GITHUB PAGES DEPLOYMENT GUIDE & CLEAN SOURCE FILES
-         ==================================================================== -->
-    <section id="view-github" class="hidden space-y-5">
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg space-y-4">
-        <div class="border-b border-slate-800 pb-3">
-          <h2 class="text-lg sm:text-xl font-black text-white">GitHub Pages Deployment Guide & Modular Source Files</h2>
-          <p class="text-xs text-slate-400 mt-0.5">
-            Download or copy the 4 clean repository files (<code class="text-lime-300">index.html</code>, <code class="text-lime-300">style.css</code>, <code class="text-lime-300">app.js</code>, <code class="text-lime-300">README.md</code>) and host your rehab tracker for free on <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer" class="text-sky-400 underline">GitHub Pages ↗</a>.
-          </p>
-        </div>
-
-        <!-- Step-by-Step Instructions Card -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
-            <div class="text-xs font-extrabold uppercase text-lime-400 mb-1">Step 1: Create Repository</div>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Sign in to GitHub, click <strong>+ → New repository</strong>, name it <code class="text-sky-300">patellar-rehab-tracker</code>, set visibility to <strong>Public</strong>, and click <strong>Create repository</strong> (<a href="https://docs.github.com/en/pages/quickstart" target="_blank" rel="noopener noreferrer" class="text-sky-400 underline">GitHub Pages Quickstart ↗</a>).
-            </p>
-          </div>
-          <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
-            <div class="text-xs font-extrabold uppercase text-sky-400 mb-1">Step 2: Push or Upload Files</div>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Upload <code class="text-lime-300">index.html</code>, <code class="text-lime-300">style.css</code>, <code class="text-lime-300">app.js</code>, and <code class="text-lime-300">README.md</code> via the GitHub web uploader or run <code class="text-slate-200">git add . &amp;&amp; git commit -m "Deploy" &amp;&amp; git push -u origin main</code>.
-            </p>
-          </div>
-          <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
-            <div class="text-xs font-extrabold uppercase text-amber-400 mb-1">Step 3: Enable GitHub Pages</div>
-            <p class="text-xs text-slate-300 leading-relaxed">
-              Open <strong>Settings → Pages</strong>, set <strong>Source</strong> to <strong>Deploy from a branch</strong>, select <strong>main</strong> / <strong>/ (root)</strong>, and click <strong>Save</strong> (<a href="https://docs.github.com/articles/creating-project-pages-manually" target="_blank" rel="noopener noreferrer" class="text-sky-400 underline">Creating a GitHub Pages Site ↗</a>).
-            </p>
-          </div>
-        </div>
-
-        <!-- One-Click File Download / Copy Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 flex flex-col justify-between gap-2">
-            <div class="text-xs font-extrabold text-white">📄 index.html</div>
-            <div class="flex gap-1.5">
-              <button type="button" id="btn-copy-file-html" onclick="copyRepoFile('index.html')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-lime-300">Copy</button>
-              <button type="button" id="btn-download-file-html" onclick="downloadRepoFile('index.html')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-sky-300">Save</button>
-            </div>
-          </div>
-          <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 flex flex-col justify-between gap-2">
-            <div class="text-xs font-extrabold text-white">🎨 style.css</div>
-            <div class="flex gap-1.5">
-              <button type="button" id="btn-copy-file-css" onclick="copyRepoFile('style.css')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-lime-300">Copy</button>
-              <button type="button" id="btn-download-file-css" onclick="downloadRepoFile('style.css')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-sky-300">Save</button>
-            </div>
-          </div>
-          <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 flex flex-col justify-between gap-2">
-            <div class="text-xs font-extrabold text-white">⚙️ app.js</div>
-            <div class="flex gap-1.5">
-              <button type="button" id="btn-copy-file-js" onclick="copyRepoFile('app.js')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-lime-300">Copy</button>
-              <button type="button" id="btn-download-file-js" onclick="downloadRepoFile('app.js')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-sky-300">Save</button>
-            </div>
-          </div>
-          <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 flex flex-col justify-between gap-2">
-            <div class="text-xs font-extrabold text-white">📘 README.md</div>
-            <div class="flex gap-1.5">
-              <button type="button" id="btn-copy-file-readme" onclick="copyRepoFile('README.md')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-lime-300">Copy</button>
-              <button type="button" id="btn-download-file-readme" onclick="downloadRepoFile('README.md')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-sky-300">Save</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- File Source Inspector -->
-        <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <label for="code-preview-select" class="text-xs font-extrabold uppercase text-slate-400">Inspect File Source:</label>
-              <select
-                id="code-preview-select"
-                onchange="renderGithubCodePreview()"
-                class="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-xs font-bold text-lime-300"
-              >
-                <option value="README.md">README.md</option>
-                <option value="index.html">index.html</option>
-                <option value="style.css">style.css</option>
-                <option value="app.js">app.js</option>
-              </select>
-            </div>
-            <button
-              type="button"
-              id="btn-copy-active-code"
-              onclick="copyActivePreviewFile()"
-              class="px-3 py-1.5 rounded-lg bg-lime-400 text-slate-950 text-xs font-extrabold"
-            >
-              📋 Copy Displayed File
-            </button>
-          </div>
-          <pre id="github-code-preview" class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 overflow-x-auto max-h-80"></pre>
-        </div>
       </div>
     </section>
 
   </main>
 
-  <!-- Persistent Bottom Floating Mini-Timer Bar -->
-  <div id="floating-timer-bar" class="fixed bottom-0 inset-x-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 px-3 sm:px-6 py-2.5 shadow-2xl">
-    <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
-      <div class="flex items-center gap-2.5 min-w-0">
-        <span class="w-2.5 h-2.5 rounded-full bg-lime-400 shrink-0 animate-pulse"></span>
-        <div class="truncate">
-          <div id="floating-timer-label" class="text-xs font-bold text-slate-200 truncate">Rig Spanish Squat — 45s Isometric Hold</div>
-          <div class="text-[11px] text-slate-400">Tap Start for Hold / Rest / 3s-3s HSR Tempo</div>
-        </div>
+  <!-- Floating Bottom Mini-Timer Bar -->
+  <div id="floating-timer-bar" class="fixed bottom-0 inset-x-0 z-40 bg-[#181b1f]/95 backdrop-blur-md border-t border-[#2a2f37] px-4 py-2.5 shadow-lg">
+    <div class="max-w-4xl mx-auto flex items-center justify-between gap-3">
+      <div id="floating-timer-label" class="text-xs font-medium text-[#f1f5f9] truncate">
+        Rig Spanish Squat — 45s Isometric Hold
       </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <span id="floating-timer-clock" class="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 font-black text-sm sm:text-base text-lime-400 tabular-nums">
+      <div class="flex items-center gap-2.5 shrink-0">
+        <span id="floating-timer-clock" class="px-2.5 py-1 rounded-lg bg-[#20242a] border border-[#2a2f37] font-mono font-bold text-sm text-[#f1f5f9] tabular-nums">
           00:45
         </span>
         <button
           type="button"
           id="btn-floating-toggle"
           onclick="toggleTimerStartPause()"
-          class="px-3.5 py-2 rounded-xl bg-lime-400 hover:bg-lime-300 text-slate-950 font-extrabold text-xs"
+          class="px-3.5 py-1.5 rounded-lg bg-[#e2e8f0] hover:bg-white text-[#0f172a] font-bold text-xs transition-colors"
         >
-          ▶ Start
-        </button>
-        <button
-          type="button"
-          id="btn-floating-open"
-          onclick="switchTab('timer')"
-          class="px-2.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs"
-        >
-          Expand
+          Start
         </button>
       </div>
     </div>
   </div>
 
-  <!-- In-Page Toast Notification -->
-  <div id="app-toast" class="hidden fixed top-20 right-4 z-50 max-w-sm px-4 py-3 rounded-xl bg-slate-900/95 border border-lime-400/60 text-lime-300 shadow-2xl text-xs sm:text-sm font-bold flex items-center gap-2">
-    <span>✓</span>
+  <!-- Toast Notification -->
+  <div id="app-toast" class="hidden fixed top-16 right-4 z-50 max-w-sm px-3.5 py-2.5 rounded-lg bg-[#181b1f] border border-[#2a2f37] text-[#f1f5f9] shadow-lg text-xs font-medium flex items-center gap-2">
+    <span class="text-[#10b981]">✓</span>
     <span id="app-toast-text">Action completed</span>
   </div>
 
-  <!-- In-Page Confirmation Modal (Zero Blocked Browser Dialogs) -->
-  <div id="confirm-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-5 shadow-2xl space-y-4">
-      <h3 id="confirm-modal-title" class="text-base font-black text-white">Confirm Action</h3>
-      <p id="confirm-modal-body" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
-      <div class="flex items-center justify-end gap-2.5 pt-2">
+  <!-- Confirmation Modal -->
+  <div id="confirm-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl max-w-md w-full p-4 sm:p-5 shadow-xl space-y-3">
+      <h3 id="confirm-modal-title" class="text-sm sm:text-base font-bold text-[#f1f5f9]">Confirm Action</h3>
+      <p id="confirm-modal-body" class="text-xs sm:text-sm text-[#94a3b8] leading-relaxed"></p>
+      <div class="flex items-center justify-end gap-2 pt-1">
         <button
           type="button"
           id="btn-confirm-cancel"
           onclick="closeConfirmModal()"
-          class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold"
+          class="px-3 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] text-[#94a3b8] hover:text-[#f1f5f9] text-xs font-medium"
         >
           Cancel
         </button>
@@ -687,7 +484,7 @@
           type="button"
           id="btn-confirm-ok"
           onclick="executeConfirmModal()"
-          class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-extrabold"
+          class="px-3 py-1.5 rounded-lg bg-[#e11d48] hover:bg-[#e11d48]/90 text-white text-xs font-bold"
         >
           Confirm
         </button>

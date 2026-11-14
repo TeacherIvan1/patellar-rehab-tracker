@@ -1,497 +1,191 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>Patellar Tendinitis Rehab</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Teacher Ivan - Programa de Rehabilitación</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            base: '#111315',
-            surface: '#181b1f',
-            elevated: '#20242a',
-            borderSubtle: '#2a2f37',
-            textPrimary: '#f1f5f9',
-            textSecondary: '#94a3b8',
-            textMuted: '#64748b'
-          }
-        }
-      }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="bg-[#111315] text-[#f1f5f9] min-h-screen pb-24 antialiased">
+<body>
 
-  <!-- Header & Navigation -->
-  <header class="sticky top-0 z-30 bg-[#111315]/95 backdrop-blur-md border-b border-[#2a2f37]">
-    <div class="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between">
-      <h1 class="text-sm sm:text-base font-bold tracking-tight text-[#f1f5f9]">Patellar Rehab</h1>
-      <span id="header-readiness-pill" class="px-2.5 py-0.5 rounded-full text-xs font-semibold border border-[#2a2f37] bg-[#20242a] text-[#94a3b8]">
-        24h: -- • Ready
-      </span>
-    </div>
+  <main class="app-container pb-24">
 
-    <!-- 4 Clean Text Tabs -->
-    <nav class="max-w-4xl mx-auto px-4 grid grid-cols-4 border-t border-[#2a2f37]/80">
-      <button type="button" id="tab-btn-workout" onclick="switchTab('workout')" class="nav-tab active tap-target py-2 text-center">
-        Plan
-      </button>
-      <button type="button" id="tab-btn-timer" onclick="switchTab('timer')" class="nav-tab tap-target py-2 text-center">
-        Timer
-      </button>
-      <button type="button" id="tab-btn-tracker" onclick="switchTab('tracker')" class="nav-tab tap-target py-2 text-center">
-        Log
-      </button>
-      <button type="button" id="tab-btn-ai" onclick="switchTab('ai')" class="nav-tab tap-target py-2 text-center">
-        AI
-      </button>
-    </nav>
-  </header>
-
-  <!-- Main Content -->
-  <main class="max-w-4xl mx-auto px-4 pt-4 space-y-4">
-
-    <!-- VIEW 1: REHAB PLAN -->
-    <section id="view-workout" class="space-y-4">
-      <!-- 4 Compact Phase Pills -->
-      <div id="phase-selector-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
-
-      <!-- Phase Overview Card -->
-      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 space-y-3">
-        <div class="flex items-center justify-between gap-2">
-          <div>
-            <h2 id="phase-banner-title" class="text-sm sm:text-base font-bold text-[#f1f5f9]">Phase 2 — Heavy Slow Resistance (HSR)</h2>
-            <p id="phase-banner-subtitle" class="text-xs text-[#94a3b8] mt-0.5">3x/week • 48h rest between sessions</p>
-          </div>
-          <button
-            type="button"
-            onclick="resetTodaySets()"
-            class="px-2.5 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8] hover:text-[#f1f5f9] transition-colors"
-          >
-            Reset Sets
-          </button>
+    <!-- CABECERA SIMPLE Y DIRECTA -->
+    <header class="bg-[#1A3153] text-white px-4 pt-4 pb-3.5 sticky top-0 z-30 shadow-md">
+      <div class="flex items-center justify-between gap-2">
+        <div>
+          <h1 class="text-base font-extrabold tracking-tight leading-tight">
+            Teacher Ivan - Rehabilitación
+          </h1>
+          <p id="headerPhaseSubtitle" class="text-[11px] text-sky-200 font-semibold mt-0.5">
+            Fase 1 • Analgesia Isométrica y Fuerza
+          </p>
         </div>
-
-        <!-- Slim Progress Bar -->
-        <div class="pt-1">
-          <div class="flex items-center justify-between text-xs mb-1">
-            <span class="text-[#64748b]">Session Progress</span>
-            <span id="workout-completion-text" class="text-[#94a3b8] font-medium">0 / 0 sets</span>
-          </div>
-          <div class="w-full h-1.5 rounded-full bg-[#20242a] overflow-hidden">
-            <div id="workout-completion-bar" class="h-full bg-[#10b981] transition-all duration-300" style="width: 0%;"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Prescribed Exercise Cards Container -->
-      <div id="exercise-cards-container" class="space-y-3"></div>
-    </section>
-
-    <!-- VIEW 2: GYM TIMER -->
-    <section id="view-timer" class="hidden space-y-4">
-      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 sm:p-5">
-        <div class="flex items-center justify-between pb-3 border-b border-[#2a2f37]">
-          <h2 class="text-sm sm:text-base font-bold text-[#f1f5f9]">Timer</h2>
-          <button
-            type="button"
-            id="timer-audio-toggle"
-            onclick="toggleTimerMute()"
-            class="px-2.5 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]"
-          >
-            Buzzer Active
-          </button>
-        </div>
-
-        <!-- 3 Mode Buttons -->
-        <div class="grid grid-cols-3 gap-2 my-4">
-          <button type="button" id="timer-mode-iso" onclick="setTimerMode('iso')" class="tap-target py-2 rounded-lg font-semibold text-xs sm:text-sm bg-[#e2e8f0] text-[#0f172a]">
-            Hold (45s)
-          </button>
-          <button type="button" id="timer-mode-rest" onclick="setTimerMode('rest')" class="tap-target py-2 rounded-lg font-medium text-xs sm:text-sm bg-[#20242a] text-[#94a3b8] border border-[#2a2f37]">
-            Rest
-          </button>
-          <button type="button" id="timer-mode-hsr" onclick="setTimerMode('hsr')" class="tap-target py-2 rounded-lg font-medium text-xs sm:text-sm bg-[#20242a] text-[#94a3b8] border border-[#2a2f37]">
-            Tempo (3s/3s)
-          </button>
-        </div>
-
-        <!-- Radial Timer Display -->
-        <div class="flex flex-col items-center justify-center py-3">
-          <p id="timer-context-label" class="text-xs text-[#94a3b8] mb-3 text-center"></p>
-
-          <div class="relative w-44 h-44 flex items-center justify-center">
-            <svg class="w-full h-full" viewBox="0 0 220 220">
-              <circle cx="110" cy="110" r="96" stroke="#20242a" stroke-width="10" fill="none" />
-              <circle
-                id="timer-ring-progress"
-                class="timer-ring-circle"
-                cx="110"
-                cy="110"
-                r="96"
-                stroke="#10b981"
-                stroke-width="10"
-                stroke-linecap="round"
-                fill="none"
-                stroke-dasharray="603.18"
-                stroke-dashoffset="0"
-              />
-            </svg>
-            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-              <span id="timer-phase-badge" class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#20242a] text-[#94a3b8] border border-[#2a2f37] mb-1">
-                READY
-              </span>
-              <div id="timer-display-main" class="text-4xl sm:text-5xl font-mono font-bold tracking-tight text-[#f1f5f9] tabular-nums">
-                00:45
-              </div>
-              <div id="timer-hsr-rep-counter" class="hidden text-xs text-[#94a3b8] mt-1">
-                Rep 1 of 8
-              </div>
-            </div>
-          </div>
-
-          <!-- Controls -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-md mt-4">
-            <button
-              type="button"
-              id="btn-timer-start"
-              onclick="toggleTimerStartPause()"
-              class="col-span-2 tap-target py-2.5 rounded-lg bg-[#e2e8f0] hover:bg-white text-[#0f172a] font-bold text-xs sm:text-sm transition-colors"
-            >
-              Start
-            </button>
-            <button
-              type="button"
-              id="btn-timer-reset"
-              onclick="resetTimer()"
-              class="tap-target py-2.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-[#94a3b8] hover:text-[#f1f5f9] font-medium text-xs sm:text-sm transition-colors"
-            >
-              Reset
-            </button>
-            <div class="grid grid-cols-2 gap-1.5">
-              <button
-                type="button"
-                id="btn-timer-minus15"
-                onclick="adjustTimerSeconds(-15)"
-                class="tap-target rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-[#94a3b8] hover:text-[#f1f5f9] font-medium text-xs"
-              >
-                -15s
-              </button>
-              <button
-                type="button"
-                id="btn-timer-plus15"
-                onclick="adjustTimerSeconds(15)"
-                class="tap-target rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-[#94a3b8] hover:text-[#f1f5f9] font-medium text-xs"
-              >
-                +15s
-              </button>
-            </div>
-          </div>
-
-          <!-- Quick Presets -->
-          <div class="w-full max-w-md mt-4 pt-3 border-t border-[#2a2f37] space-y-2.5">
-            <div class="text-[11px] font-semibold uppercase tracking-wider text-[#64748b]">Presets</div>
-            <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
-              <button type="button" id="btn-preset-30" onclick="setTimerPreset(30)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">30s</button>
-              <button type="button" id="btn-preset-45" onclick="setTimerPreset(45)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">45s</button>
-              <button type="button" id="btn-preset-60" onclick="setTimerPreset(60)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">60s</button>
-              <button type="button" id="btn-preset-90" onclick="setTimerPreset(90)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">90s</button>
-              <button type="button" id="btn-preset-120" onclick="setTimerPreset(120)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">2m</button>
-              <button type="button" id="btn-preset-180" onclick="setTimerPreset(180)" class="tap-target py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8]">3m</button>
-            </div>
-
-            <div class="flex items-center justify-between p-2.5 rounded-lg bg-[#111315] border border-[#2a2f37]">
-              <span class="text-xs text-[#94a3b8]">HSR Target Reps (3s/3s)</span>
-              <input
-                type="number"
-                id="hsr-target-reps-input"
-                min="1"
-                max="25"
-                value="8"
-                onchange="updateHsrTargetReps(this.value)"
-                class="w-16 px-2 py-1 rounded bg-[#20242a] border border-[#2a2f37] text-center text-xs font-bold text-[#f1f5f9]"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- VIEW 3: PAIN LOG & CHART -->
-    <section id="view-tracker" class="hidden space-y-4">
-      <!-- Pain Trend Chart -->
-      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 sm:p-5">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-sm sm:text-base font-bold text-[#f1f5f9]">Pain Trend</h2>
-          <button
-            type="button"
-            id="btn-seed-sample-logs"
-            onclick="seedSampleLogs()"
-            class="px-2.5 py-1 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs text-[#94a3b8] hover:text-[#f1f5f9] transition-colors"
-          >
-            Restore Sample
-          </button>
-        </div>
-        <div class="relative h-60 w-full">
-          <canvas id="pain-trend-chart"></canvas>
-        </div>
-      </div>
-
-      <!-- Daily Log Form -->
-      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 sm:p-5 space-y-3.5">
-        <div class="flex items-center justify-between border-b border-[#2a2f37] pb-3">
-          <h2 class="text-sm sm:text-base font-bold text-[#f1f5f9]">Daily Log</h2>
-          <div class="flex items-center gap-2">
-            <input
-              type="date"
-              id="log-date-input"
-              value="2026-11-11"
-              onchange="handleLogDateChange(this.value)"
-              class="px-2.5 py-1.5 rounded-lg bg-[#20242a] border border-[#2a2f37] text-xs font-medium text-[#f1f5f9]"
-            />
-            <select
-              id="log-phase-select"
-              class="px-2.5 py-1.5 rounded-lg bg-[#20242a] border border-[#2a2f37] text-xs font-medium text-[#f1f5f9]"
-            >
-              <option value="1">Phase 1: Isometrics</option>
-              <option value="2" selected>Phase 2: HSR</option>
-              <option value="3">Phase 3: Plyos</option>
-              <option value="4">Phase 4: Return to WOD</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- 4 Clean Pain Selectors -->
-        <div class="space-y-3">
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <label class="text-xs font-medium text-[#94a3b8]">Pre-Workout</label>
-              <span id="val-pain-pre" class="text-xs font-semibold px-2 py-0.5 rounded bg-[#20242a] text-[#f1f5f9]">1 / 10</span>
-            </div>
-            <div id="pain-grid-pre" class="grid grid-cols-11 gap-1"></div>
-          </div>
-
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <label class="text-xs font-medium text-[#94a3b8]">Post-Workout</label>
-              <span id="val-pain-post" class="text-xs font-semibold px-2 py-0.5 rounded bg-[#20242a] text-[#f1f5f9]">2 / 10</span>
-            </div>
-            <div id="pain-grid-post" class="grid grid-cols-11 gap-1"></div>
-          </div>
-
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <label class="text-xs font-medium text-[#94a3b8]">24h Next-Day</label>
-              <span id="val-pain-24h" class="text-xs font-semibold px-2 py-0.5 rounded bg-[#20242a] text-[#f1f5f9]">1 / 10</span>
-            </div>
-            <div id="pain-grid-24h" class="grid grid-cols-11 gap-1"></div>
-          </div>
-
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <label class="text-xs font-medium text-[#94a3b8]">Decline Squat Test</label>
-              <span id="val-pain-decline" class="text-xs font-semibold px-2 py-0.5 rounded bg-[#20242a] text-[#f1f5f9]">1 / 10</span>
-            </div>
-            <div id="pain-grid-decline" class="grid grid-cols-11 gap-1"></div>
-          </div>
-        </div>
-
-        <!-- Concise Clinical Decision Box -->
-        <div id="clinical-decision-box"></div>
-
-        <!-- Completed Exercises & Notes -->
-        <div class="grid grid-cols-1 gap-2.5 pt-1">
-          <div>
-            <label for="log-exercises-summary" class="block text-[11px] font-semibold uppercase tracking-wider text-[#64748b] mb-1">
-              Completed Exercises & Loads
-            </label>
-            <input
-              type="text"
-              id="log-exercises-summary"
-              placeholder="e.g., Slant Board HSR (4x8 @ 60kg)"
-              class="w-full px-3 py-2 rounded-lg bg-[#20242a] border border-[#2a2f37] text-xs text-[#f1f5f9] placeholder:text-[#64748b] focus:outline-none focus:border-[#475569]"
-            />
-          </div>
-
-          <div>
-            <label for="log-notes-input" class="block text-[11px] font-semibold uppercase tracking-wider text-[#64748b] mb-1">
-              Notes
-            </label>
-            <textarea
-              id="log-notes-input"
-              rows="2"
-              placeholder="Morning stiffness, scaling notes..."
-              class="w-full px-3 py-2 rounded-lg bg-[#20242a] border border-[#2a2f37] text-xs text-[#f1f5f9] placeholder:text-[#64748b] focus:outline-none focus:border-[#475569]"
-            ></textarea>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2 pt-1">
-          <button
-            type="button"
-            id="btn-save-log"
-            onclick="saveDailyLog()"
-            class="flex-1 py-2 px-4 rounded-lg bg-[#e2e8f0] hover:bg-white text-[#0f172a] font-bold text-xs transition-colors"
-          >
-            Save Log
-          </button>
-          <button
-            type="button"
-            id="btn-clear-log-form"
-            onclick="clearLogForm()"
-            class="py-2 px-4 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-[#94a3b8] hover:text-[#f1f5f9] text-xs font-medium transition-colors"
-          >
-            Clear
+        <div class="flex items-center gap-1.5">
+          <button id="btnOpen1RMModal" onclick="openModal('modal1RM')" class="px-3 py-1.5 rounded-xl bg-[#E09B30] hover:bg-amber-500 text-slate-950 text-xs font-extrabold flex items-center gap-1 shadow-xs transition">
+            <i data-lucide="dumbbell" class="w-3.5 h-3.5"></i>
+            <span>Mis 1RM</span>
           </button>
         </div>
       </div>
 
-      <!-- Log History -->
-      <div class="space-y-2">
-        <h3 class="text-[11px] font-semibold uppercase tracking-wider text-[#64748b]">Log History</h3>
-        <div id="log-history-container" class="space-y-2"></div>
+      <!-- CINTA RÁPIDA DE 1RM -->
+      <div id="top1RMStrip" class="grid grid-cols-6 gap-1 mt-2.5 pt-2 border-t border-white/15 text-center font-mono-num text-[10px]">
+        <!-- Renderizado por JS -->
       </div>
-    </section>
+    </header>
 
-    <!-- VIEW 4: AI SYNC -->
-    <section id="view-ai" class="hidden space-y-4">
-      <!-- Card 1: Export 7-Day Summary -->
-      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 sm:p-5 space-y-3">
-        <div class="flex items-center justify-between pb-2.5 border-b border-[#2a2f37]">
-          <h2 class="text-sm sm:text-base font-bold text-[#f1f5f9]">Export 7-Day Summary</h2>
-          <div class="flex items-center gap-2">
-            <button
-              type="button"
-              id="btn-generate-ai-report"
-              onclick="generateAiExportReport(true)"
-              class="px-2.5 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8] hover:text-[#f1f5f9] transition-colors"
-            >
-              Refresh
-            </button>
-            <button
-              type="button"
-              id="btn-copy-ai-report"
-              onclick="copyAiExportToClipboard()"
-              class="px-3 py-1.5 rounded-lg bg-[#e2e8f0] hover:bg-white text-[#0f172a] text-xs font-bold transition-colors"
-            >
-              Copy
-            </button>
-          </div>
+    <!-- SELECTOR DE ENTRENAMIENTOS (SOLO NÚMEROS 1 AL 24 • 1 Y 2 EN VERDE) -->
+    <section class="p-3.5 bg-white border-b border-slate-200 space-y-2.5">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Entrenamientos (1–24)</span>
+          <span id="completedCountBadge" class="text-[11px] font-mono-num font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">2/24 Completados</span>
         </div>
-        <textarea
-          id="ai-export-textarea"
-          rows="10"
-          readonly
-          class="w-full p-3 rounded-lg bg-[#111315] border border-[#2a2f37] font-mono text-xs text-[#94a3b8] leading-relaxed focus:outline-none"
-        ></textarea>
-      </div>
-
-      <!-- Card 2: Import Plan JSON -->
-      <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl p-4 sm:p-5 space-y-3">
-        <div class="flex items-center justify-between pb-2.5 border-b border-[#2a2f37]">
-          <h2 class="text-sm sm:text-base font-bold text-[#f1f5f9]">Import Plan JSON</h2>
-          <div class="flex items-center gap-2">
-            <button
-              type="button"
-              id="btn-load-sample-json"
-              onclick="loadSampleAiAdjustmentJson()"
-              class="px-2.5 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8] hover:text-[#f1f5f9] transition-colors"
-            >
-              Sample JSON
-            </button>
-            <button
-              type="button"
-              id="btn-reset-default-plan"
-              onclick="resetDefaultProtocol()"
-              class="px-2.5 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] border border-[#2a2f37] text-xs font-medium text-[#94a3b8] hover:text-[#f1f5f9] transition-colors"
-            >
-              Reset
-            </button>
-          </div>
-        </div>
-        <textarea
-          id="ai-import-textarea"
-          rows="8"
-          placeholder="Paste updated JSON plan..."
-          class="w-full p-3 rounded-lg bg-[#111315] border border-[#2a2f37] font-mono text-xs text-[#f1f5f9] placeholder:text-[#64748b] leading-relaxed focus:outline-none focus:border-[#475569]"
-        ></textarea>
-        <button
-          type="button"
-          id="btn-import-json-plan"
-          onclick="importUpdatedPlanJson()"
-          class="w-full py-2.5 rounded-lg bg-[#e2e8f0] hover:bg-white text-[#0f172a] font-bold text-xs sm:text-sm transition-colors"
-        >
-          Apply Plan
+        <button id="btnToggleWorkoutDone" onclick="toggleCurrentWorkoutDone()" class="px-3 py-1 rounded-xl text-xs font-extrabold transition bg-emerald-500 text-white">
+          ✓ Completado
         </button>
-        <div id="import-status-banner" class="hidden"></div>
       </div>
+
+      <!-- Cuadrícula Numérica 1 al 24 (Sin fechas ni días de la semana) -->
+      <div id="workoutNumbersGrid" class="grid grid-cols-8 gap-1.5">
+        <!-- Botones 1..24 inyectados por JS -->
+      </div>
+    </section>
+
+    <!-- TÍTULO DEL ENTRENAMIENTO ACTIVO -->
+    <section class="px-3.5 pt-3 pb-1 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2">
+          <span id="activeWorkoutNumberBadge" class="px-2.5 py-0.5 rounded-lg bg-[#1A3153] text-white font-mono-num text-xs font-extrabold">
+            Entrenamiento #3
+          </span>
+          <span id="activeWorkoutStatusTag" class="text-xs font-bold text-slate-500">Pendiente</span>
+        </div>
+        <h2 id="activeWorkoutTitle" class="text-sm font-extrabold text-slate-900 mt-1">
+          Hang Power Clean (&lt;60°) y Peso Muerto Pausado
+        </h2>
+      </div>
+    </section>
+
+    <!-- LISTA DE BLOQUES DEL ENTRENAMIENTO (A, B, C, D) -->
+    <section id="workoutBlocksContainer" class="p-3.5 space-y-3.5">
+      <!-- Renderizado por JS -->
     </section>
 
   </main>
 
-  <!-- Floating Bottom Mini-Timer Bar -->
-  <div id="floating-timer-bar" class="fixed bottom-0 inset-x-0 z-40 bg-[#181b1f]/95 backdrop-blur-md border-t border-[#2a2f37] px-4 py-2.5 shadow-lg">
-    <div class="max-w-4xl mx-auto flex items-center justify-between gap-3">
-      <div id="floating-timer-label" class="text-xs font-medium text-[#f1f5f9] truncate">
-        Rig Spanish Squat — 45s Isometric Hold
+  <!-- BARRA INFERIOR: TEMPORIZADOR RÁPIDO (ISOMETRÍA 45S / TEMPO 3-1-3 / DESCANSO) -->
+  <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[460px] bg-[#1E293B] text-white px-3.5 py-2.5 z-30 border-t border-slate-700 shadow-2xl flex items-center justify-between gap-2">
+    <div class="flex items-center gap-1.5">
+      <button id="btnTimerIso45" onclick="setQuickTimer(45, 'Isometría 45s')" class="px-2.5 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-[11px] font-bold transition">
+        45s Iso
+      </button>
+      <button id="btnTimerBaar30" onclick="setQuickTimer(30, 'Baar 30s')" class="px-2.5 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-[11px] font-bold transition">
+        30s Iso
+      </button>
+      <button id="btnTimerRest120" onclick="setQuickTimer(120, 'Descanso 2:00')" class="px-2.5 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-[11px] font-bold transition">
+        2:00 Desc
+      </button>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <div class="text-right">
+        <div id="quickTimerLabel" class="text-[9px] font-bold uppercase text-amber-300 leading-none">Isometría 45s</div>
+        <div id="quickTimerDisplay" class="text-lg font-mono-num font-extrabold leading-tight">00:45</div>
       </div>
-      <div class="flex items-center gap-2.5 shrink-0">
-        <span id="floating-timer-clock" class="px-2.5 py-1 rounded-lg bg-[#20242a] border border-[#2a2f37] font-mono font-bold text-sm text-[#f1f5f9] tabular-nums">
-          00:45
-        </span>
-        <button
-          type="button"
-          id="btn-floating-toggle"
-          onclick="toggleTimerStartPause()"
-          class="px-3.5 py-1.5 rounded-lg bg-[#e2e8f0] hover:bg-white text-[#0f172a] font-bold text-xs transition-colors"
-        >
-          Start
+      <button id="btnQuickTimerPlay" onclick="toggleQuickTimer()" class="w-9 h-9 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow transition">
+        <i id="quickTimerIcon" data-lucide="play" class="w-4 h-4 fill-current"></i>
+      </button>
+      <button id="btnQuickTimerReset" onclick="resetQuickTimer()" class="w-8 h-8 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 flex items-center justify-center transition">
+        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL VISOR YOUTUBE -->
+  <div id="modalYoutube" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xs z-50 hidden items-center justify-center p-3">
+    <div class="bg-white rounded-2xl max-w-md w-full p-4 shadow-2xl space-y-3">
+      <div class="flex items-center justify-between gap-2">
+        <h3 id="ytModalTitle" class="text-sm font-extrabold text-slate-900 truncate">Demostración del Ejercicio</h3>
+        <button id="btnCloseYoutubeModal" onclick="closeYoutubeModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center">
+          <i data-lucide="x" class="w-4 h-4"></i>
         </button>
+      </div>
+
+      <div class="relative w-full rounded-xl overflow-hidden bg-black aspect-video">
+        <iframe
+          id="ytModalIframe"
+          class="w-full h-full border-0"
+          src=""
+          title="Video de Ejercicio en YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <div class="flex items-center justify-between pt-1">
+        <span class="text-[11px] text-slate-500 font-medium">Si no carga en vista previa, ábrelo directo:</span>
+        <a id="ytModalDirectLink" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-xs">
+          <span>Ver en YouTube</span>
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+        </a>
       </div>
     </div>
   </div>
 
-  <!-- Toast Notification -->
-  <div id="app-toast" class="hidden fixed top-16 right-4 z-50 max-w-sm px-3.5 py-2.5 rounded-lg bg-[#181b1f] border border-[#2a2f37] text-[#f1f5f9] shadow-lg text-xs font-medium flex items-center gap-2">
-    <span class="text-[#10b981]">✓</span>
-    <span id="app-toast-text">Action completed</span>
-  </div>
+  <!-- MODAL EDITAR 1RM -->
+  <div id="modal1RM" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-4 shadow-2xl space-y-3.5">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-extrabold text-slate-900">Mis Marcas 1RM (kg)</h3>
+          <p class="text-[11px] text-slate-500">Todos los pesos se calculan automáticamente</p>
+        </div>
+        <button id="btnClose1RM" onclick="closeModal('modal1RM')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
 
-  <!-- Confirmation Modal -->
-  <div id="confirm-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-[#181b1f] border border-[#2a2f37] rounded-xl max-w-md w-full p-4 sm:p-5 shadow-xl space-y-3">
-      <h3 id="confirm-modal-title" class="text-sm sm:text-base font-bold text-[#f1f5f9]">Confirm Action</h3>
-      <p id="confirm-modal-body" class="text-xs sm:text-sm text-[#94a3b8] leading-relaxed"></p>
-      <div class="flex items-center justify-end gap-2 pt-1">
-        <button
-          type="button"
-          id="btn-confirm-cancel"
-          onclick="closeConfirmModal()"
-          class="px-3 py-1.5 rounded-lg bg-[#20242a] hover:bg-[#2a2f37] text-[#94a3b8] hover:text-[#f1f5f9] text-xs font-medium"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          id="btn-confirm-ok"
-          onclick="executeConfirmModal()"
-          class="px-3 py-1.5 rounded-lg bg-[#e11d48] hover:bg-[#e11d48]/90 text-white text-xs font-bold"
-        >
-          Confirm
-        </button>
+      <div class="grid grid-cols-2 gap-2.5">
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <label class="text-[10px] font-bold text-slate-500 block">Press de Banca</label>
+          <input id="input1rm-bench" type="number" value="140" class="w-full mt-0.5 text-sm font-mono-num font-extrabold text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200" />
+        </div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <label class="text-[10px] font-bold text-slate-500 block">Sentadilla Trasera</label>
+          <input id="input1rm-backSquat" type="number" value="170" class="w-full mt-0.5 text-sm font-mono-num font-extrabold text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200" />
+        </div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <label class="text-[10px] font-bold text-slate-500 block">Sentadilla Frontal</label>
+          <input id="input1rm-frontSquat" type="number" value="155" class="w-full mt-0.5 text-sm font-mono-num font-extrabold text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200" />
+        </div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <label class="text-[10px] font-bold text-slate-500 block">Snatch (Arrancada)</label>
+          <input id="input1rm-snatch" type="number" value="90" class="w-full mt-0.5 text-sm font-mono-num font-extrabold text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200" />
+        </div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <label class="text-[10px] font-bold text-slate-500 block">Clean &amp; Jerk</label>
+          <input id="input1rm-cleanJerk" type="number" value="120" class="w-full mt-0.5 text-sm font-mono-num font-extrabold text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200" />
+        </div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+          <label class="text-[10px] font-bold text-slate-500 block">Press Estricto</label>
+          <input id="input1rm-strictPress" type="number" value="95" class="w-full mt-0.5 text-sm font-mono-num font-extrabold text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200" />
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-1">
+        <button id="btnReset1RM" onclick="resetDefault1RMs()" class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold">Por Defecto</button>
+        <button id="btnSave1RM" onclick="save1RMProfile()" class="px-4 py-1.5 rounded-xl bg-[#1A3153] text-white text-xs font-extrabold">Guardar</button>
       </div>
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
